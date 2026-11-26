@@ -542,8 +542,21 @@ export default function App() {
           transition: 'transform 1s cubic-bezier(.2,.8,.2,1) .1s, opacity .6s ease .1s',
         }}
       >
-        <a href="#hero" aria-label="Home" className="pointer-events-auto shrink-0 w-12 h-12 rounded-full bg-black text-white ring-1 ring-white/25 grid place-items-center shadow-lg hover:scale-105 transition-transform">
-          <LogoR className="h-6 w-auto" />
+        <a
+          href="#hero"
+          aria-label="Muhammad Raynor Athaillah - Home"
+          className="pointer-events-auto group flex items-center gap-2.5 sm:gap-3 shrink-0"
+        >
+          <div className="w-10 h-10 sm:w-11 sm:h-11 md:w-12 md:h-12 rounded-full bg-black text-white ring-1 ring-white/25 grid place-items-center shadow-lg group-hover:scale-105 transition-transform shrink-0">
+            <LogoR className="h-5 sm:h-5.5 md:h-6 w-auto" />
+          </div>
+          <span
+            className={`font-semibold tracking-tight text-xs sm:text-sm md:text-base transition-colors duration-300 ${
+              isDark ? 'text-white' : 'text-zinc-900'
+            }`}
+          >
+            Muhammad Raynor Athaillah
+          </span>
         </a>
 
         <div className="pointer-events-auto hidden lg:block absolute left-1/2 -translate-x-1/2">
