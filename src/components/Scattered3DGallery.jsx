@@ -30,18 +30,18 @@ export default function Scattered3DGallery({
   // Konfigurasi posisi dan parameter 3D organik untuk setiap kartu
   const cardConfigs = useMemo(() => {
     // 10 layout posisi organik (persentase dari viewport X & Y)
-    // Tersebar seimbang di seluruh panggung 3D layar penuh
+    // Diposisikan lebih ke bawah dan seimbang di area tengah panggung 3D
     const presets = [
-      { x: -26, y: -6,  rot: -5, zStart: -450, speed: 1.05 },
-      { x: 26,  y: -5,  rot: 4,  zStart: -250, speed: 1.0 },
-      { x: -8,  y: 0,   rot: -3, zStart: -700, speed: 1.15 },
-      { x: -33, y: 8,   rot: 7,  zStart: -1050, speed: 1.1 },
-      { x: 31,  y: 8,   rot: -6, zStart: -500, speed: 0.95 },
-      { x: 10,  y: 12,  rot: 3,  zStart: -850, speed: 1.12 },
-      { x: -18, y: 18,  rot: -7, zStart: -1300, speed: 1.2 },
-      { x: 20,  y: 19,  rot: 6,  zStart: -950, speed: 1.0 },
-      { x: 1,   y: 22,  rot: -4, zStart: -1450, speed: 1.25 },
-      { x: -35, y: 17,  rot: 5,  zStart: -1600, speed: 1.3 },
+      { x: -26, y: 5,   rot: -5, zStart: -450, speed: 1.05 },
+      { x: 26,  y: 6,   rot: 4,  zStart: -250, speed: 1.0 },
+      { x: -8,  y: 10,  rot: -3, zStart: -700, speed: 1.15 },
+      { x: -33, y: 17,  rot: 7,  zStart: -1050, speed: 1.1 },
+      { x: 31,  y: 17,  rot: -6, zStart: -500, speed: 0.95 },
+      { x: 10,  y: 20,  rot: 3,  zStart: -850, speed: 1.12 },
+      { x: -18, y: 25,  rot: -7, zStart: -1300, speed: 1.2 },
+      { x: 20,  y: 26,  rot: 6,  zStart: -950, speed: 1.0 },
+      { x: 1,   y: 28,  rot: -4, zStart: -1450, speed: 1.25 },
+      { x: -35, y: 24,  rot: 5,  zStart: -1600, speed: 1.3 },
     ];
 
     return items.map((item, i) => {
