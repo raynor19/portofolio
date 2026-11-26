@@ -7,17 +7,15 @@ import TopographyCanvas from './TopographyCanvas';
  * terinspirasi dari portofolio Eka Wahyu Maulidan.
  *
  * Dioptimalkan untuk 60–120 FPS:
- * - Direct DOM styling (tanpa re-render React saat scroll).
+ * - IntersectionObserver: animasi hanya berjalan saat elemen terlihat di layar.
+ * - Thumbnail terkompresi (w=600) untuk kartu panggung 250px (hemat memory & decode CPU 75%).
+ * - Full resolution (w=1200) hanya saat foto diklik untuk lightbox preview.
+ * - Direct DOM manipulation (0% React re-render saat scroll).
  * - Tanpa shader filter berat (backdrop-filter) pada kartu 3D.
- * - will-change terisolasi hanya pada transform.
- * - TopographyCanvas statis (0% CPU/GPU saat scroll).
  */
 export default function Scattered3DGallery({
   items = [],
   isDark = false,
-  head = 'Visual',
-  accent = 'Gallery',
-  sub = 'Curated creative pieces, 3D visual experiments, and behind-the-scenes moments.',
 }) {
   const containerRef = useRef(null);
   const stageRef = useRef(null);
@@ -48,8 +46,11 @@ export default function Scattered3DGallery({
 
     return items.map((item, i) => {
       const p = presets[i % presets.length];
+      // Gunakan thumbnail w=600 untuk kartu kecil 250px agar rendering super ringan
+      const thumb = item.src ? item.src.replace('w=1200', 'w=600') : item.src;
       return {
         ...item,
+        thumb,
         x: p.x,
         y: p.y,
         rot: p.rot,
@@ -66,6 +67,7 @@ export default function Scattered3DGallery({
     let rafId = 0;
     let curP = 0;
     let targetP = 0;
+    let isVisible = false;
 
     const clamp = (v, min = 0, max = 1) => Math.min(max, Math.max(min, v));
 
@@ -77,6 +79,8 @@ export default function Scattered3DGallery({
 
     const update = () => {
       rafId = 0;
+      if (!isVisible) return;
+
       curP += (targetP - curP) * 0.16;
       if (Math.abs(targetP - curP) < 0.0006) curP = targetP;
 
@@ -135,11 +139,21 @@ export default function Scattered3DGallery({
     };
 
     const onScroll = () => {
+      if (!isVisible) return;
       calc();
       if (!rafId) rafId = requestAnimationFrame(update);
     };
 
+    // IntersectionObserver: HANYA jalankan animasi 3D kartu saat galeri benar-benar masuk layar
+    const io = new IntersectionObserver(([entry]) => {
+      isVisible = entry.isIntersecting;
+      if (isVisible) onScroll();
+    }, { rootMargin: '100px 0px' });
+
+    io.observe(container);
+
     const onMouseMove = (e) => {
+      if (!isVisible) return;
       mouseRef.current.active = true;
       const nx = (e.clientX / window.innerWidth) * 2 - 1;
       const ny = (e.clientY / window.innerHeight) * 2 - 1;
@@ -156,6 +170,7 @@ export default function Scattered3DGallery({
     window.addEventListener('mousemove', onMouseMove, { passive: true });
 
     return () => {
+      io.disconnect();
       window.removeEventListener('scroll', onScroll);
       window.removeEventListener('resize', onScroll);
       window.removeEventListener('mousemove', onMouseMove);
@@ -216,7 +231,7 @@ export default function Scattered3DGallery({
                 {/* Frame Foto bergaya Polaroid Modern */}
                 <div className="relative aspect-[4/3] sm:aspect-[4/3.2] w-full overflow-hidden rounded-xl bg-zinc-200 dark:bg-zinc-800">
                   <img
-                    src={card.src}
+                    src={card.thumb || card.src}
                     alt={card.alt || card.title || 'Gallery item'}
                     loading="lazy"
                     decoding="async"
@@ -324,7 +339,7 @@ export default function Scattered3DGallery({
               ✕
             </button>
 
-            {/* Gambar Besar */}
+            {/* Gambar Besar Resolusi Penuh */}
             <div className="relative aspect-[16/10] sm:aspect-[16/9] w-full bg-black">
               <img
                 src={selectedPhoto.src}

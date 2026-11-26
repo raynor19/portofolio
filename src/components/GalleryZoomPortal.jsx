@@ -1,12 +1,11 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import TopographyCanvas from './TopographyCanvas';
 
 /**
  * GalleryZoomPortal
  * Gerbang zoom portal tipografi eksponensial (menembus huruf "GALLERY").
  * Terinspirasi dari portal interaktif Eka Wahyu Maulidan.
- * Saat di-scroll, huruf 'A' pada "GALLERY" membesar secara eksponensial (1x -> 95x),
- * membuka transisi visual secara mulus ke bagian Scattered 3D Gallery.
+ * Dioptimalkan untuk 60–120 FPS tanpa filter GPU berat pada teks vektor yang membesar.
  */
 export default function GalleryZoomPortal({ isDark = false }) {
   const containerRef = useRef(null);
@@ -20,6 +19,7 @@ export default function GalleryZoomPortal({ isDark = false }) {
     let rafId = 0;
     let curP = 0;
     let targetP = 0;
+    let isVisible = true;
 
     const clamp = (v, min = 0, max = 1) => Math.min(max, Math.max(min, v));
     const easeInOut = (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
@@ -32,12 +32,13 @@ export default function GalleryZoomPortal({ isDark = false }) {
 
     const update = () => {
       rafId = 0;
+      if (!isVisible) return;
+
       // Smoothing lerp
       curP += (targetP - curP) * 0.16;
       if (Math.abs(targetP - curP) < 0.001) curP = targetP;
 
       const p = curP;
-
       const z = clamp(p / 0.85);
       const e = easeInOut(z);
 
@@ -60,7 +61,7 @@ export default function GalleryZoomPortal({ isDark = false }) {
       }
 
       // Transisi latar belakang: saat skala mencapai > 30x (z >= 0.65),
-      // warna latar belakang tujuan (#fafaf8 / #09090b) perlahan membaur penuh (fade-in mulus tanpa patah)
+      // warna latar belakang tujuan (#fafaf8 / #09090b) perlahan membaur penuh
       if (flashOverlayRef.current) {
         const overlayOpacity = clamp((z - 0.62) / 0.32);
         flashOverlayRef.current.style.opacity = overlayOpacity.toFixed(3);
@@ -72,9 +73,18 @@ export default function GalleryZoomPortal({ isDark = false }) {
     };
 
     const onScroll = () => {
+      if (!isVisible) return;
       calc();
       if (!rafId) rafId = requestAnimationFrame(update);
     };
+
+    // IntersectionObserver untuk hemat daya dan menghilangkan persaingan thread saat di luar layar
+    const io = new IntersectionObserver(([entry]) => {
+      isVisible = entry.isIntersecting;
+      if (isVisible) onScroll();
+    }, { rootMargin: '120px 0px' });
+
+    io.observe(container);
 
     calc();
     onScroll();
@@ -83,6 +93,7 @@ export default function GalleryZoomPortal({ isDark = false }) {
     window.addEventListener('resize', onScroll);
 
     return () => {
+      io.disconnect();
       window.removeEventListener('scroll', onScroll);
       window.removeEventListener('resize', onScroll);
       if (rafId) cancelAnimationFrame(rafId);
@@ -103,16 +114,16 @@ export default function GalleryZoomPortal({ isDark = false }) {
         {/* Latar Belakang Gelap dengan Garis Kontur Topografi */}
         <div className="absolute inset-0 z-0 pointer-events-none">
           <TopographyCanvas theme="dark" opacity={0.4} />
-          {/* Ambient glow biru kosmik */}
+          {/* Ambient glow biru kosmik menggunakan gradien alami (ringan tanpa blur berlebih) */}
           <div
-            className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[42rem] h-[26rem] rounded-full blur-[120px] pointer-events-none"
+            className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[44rem] h-[28rem] rounded-full pointer-events-none"
             style={{
-              background: 'radial-gradient(circle, rgba(56,189,248,0.22), transparent 70%)',
+              background: 'radial-gradient(circle at center, rgba(56,189,248,0.25) 0%, rgba(56,189,248,0.08) 45%, transparent 70%)',
             }}
           />
         </div>
 
-        {/* SVG Typography "GALLERY" dengan Solid Fill & Drop Shadow */}
+        {/* SVG Typography "GALLERY" (Ringan, murni vektor tanpa drop-shadow shader GPU berat) */}
         <svg
           className="absolute inset-0 w-full h-full pointer-events-none z-10"
           viewBox="0 0 1440 900"
@@ -129,14 +140,9 @@ export default function GalleryZoomPortal({ isDark = false }) {
               fontWeight="900"
               letterSpacing="6"
               fill={isDark ? '#18181b' : '#fafaf8'}
-              stroke={isDark ? 'rgba(56, 189, 248, 0.55)' : 'rgba(0, 0, 0, 0.08)'}
-              strokeWidth="2"
+              stroke={isDark ? '#38bdf8' : 'rgba(0, 0, 0, 0.15)'}
+              strokeWidth="2.5"
               fontFamily="'Plus Jakarta Sans', 'Manrope', system-ui, sans-serif"
-              style={{
-                filter: isDark
-                  ? 'drop-shadow(0 0 25px rgba(56,189,248,0.3)) drop-shadow(0 15px 35px rgba(0,0,0,0.8))'
-                  : 'drop-shadow(0 15px 35px rgba(0,0,0,0.25)) drop-shadow(0 0 1px rgba(0,0,0,0.15))',
-              }}
             >
               GALLERY
             </text>

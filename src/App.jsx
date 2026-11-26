@@ -504,8 +504,7 @@ export default function App() {
     const schedule = () => { if (!raf) raf = requestAnimationFrame(pick); };
     const onMove = (e) => { x = e.clientX; y = e.clientY; schedule(); };
     window.addEventListener('pointermove', onMove, { passive: true });
-    window.addEventListener('scroll', schedule, { passive: true });
-    return () => { window.removeEventListener('pointermove', onMove); window.removeEventListener('scroll', schedule); cancelAnimationFrame(raf); };
+    return () => { window.removeEventListener('pointermove', onMove); cancelAnimationFrame(raf); };
   }, [isDark]);
 
   const rise = (delay = 0) => ({
