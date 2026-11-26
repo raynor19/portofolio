@@ -20,8 +20,6 @@ export default function Scattered3DGallery({
   const containerRef = useRef(null);
   const stageRef = useRef(null);
   const cardsRef = useRef([]);
-  const progressBarRef = useRef(null);
-  const progressTextRef = useRef(null);
   const [selectedPhoto, setSelectedPhoto] = useState(null);
 
   // Parallax kursor mouse
@@ -84,14 +82,6 @@ export default function Scattered3DGallery({
 
       curP += (targetP - curP) * 0.16;
       if (Math.abs(targetP - curP) < 0.0006) curP = targetP;
-
-      // Update bar & text progress langsung ke DOM tanpa React re-render
-      if (progressBarRef.current) {
-        progressBarRef.current.style.width = `${(curP * 100).toFixed(1)}%`;
-      }
-      if (progressTextRef.current) {
-        progressTextRef.current.textContent = `${Math.round(curP * 100)}%`;
-      }
 
       // Mouse lerp jika kursor aktif
       const m = mouseRef.current;
@@ -275,48 +265,6 @@ export default function Scattered3DGallery({
                 />
               </div>
             ))}
-          </div>
-        </div>
-
-        {/* Footer Bar & Progress Indicator */}
-        <div className="absolute bottom-6 md:bottom-8 inset-x-0 z-20 px-6 md:px-16 flex items-center justify-between text-xs font-mono pointer-events-none">
-          <div
-            className={`px-3 py-1.5 rounded-full border pointer-events-auto transition-colors duration-500 ${
-              isDark
-                ? 'bg-zinc-900/90 border-white/10 text-zinc-400'
-                : 'bg-white/90 border-black/10 text-zinc-600'
-            }`}
-          >
-            {cardConfigs.length} Featured Frames
-          </div>
-
-          {/* Interactive Progress Bar (Direct DOM update - 0 React Re-renders) */}
-          <div className="hidden sm:flex items-center gap-3">
-            <span className={isDark ? 'text-zinc-500' : 'text-zinc-400'}>Flight Progress</span>
-            <div
-              className={`w-32 h-1.5 rounded-full overflow-hidden ${
-                isDark ? 'bg-zinc-800' : 'bg-zinc-200'
-              }`}
-            >
-              <div
-                ref={progressBarRef}
-                className="h-full bg-gradient-to-r from-sky-400 to-indigo-500 rounded-full"
-                style={{ width: '0%' }}
-              />
-            </div>
-            <span ref={progressTextRef} className={`font-semibold ${isDark ? 'text-zinc-300' : 'text-zinc-700'}`}>
-              0%
-            </span>
-          </div>
-
-          <div
-            className={`px-3 py-1.5 rounded-full border pointer-events-auto transition-colors duration-500 ${
-              isDark
-                ? 'bg-zinc-900/90 border-white/10 text-zinc-400'
-                : 'bg-white/90 border-black/10 text-zinc-600'
-            }`}
-          >
-            Click frame to expand
           </div>
         </div>
       </div>
