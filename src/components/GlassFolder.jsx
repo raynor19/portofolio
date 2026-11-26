@@ -41,6 +41,31 @@ export default function GlassFolder({
     el.style.setProperty('--gf-py', '0');
   };
 
+  // Tutup folder otomatis saat pengguna mengklik di luar folder atau menekan tombol Escape
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const onPointerDown = (e) => {
+      if (rootRef.current && !rootRef.current.contains(e.target)) {
+        onToggle && onToggle(id);
+      }
+    };
+
+    const onKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        onToggle && onToggle(id);
+      }
+    };
+
+    window.addEventListener('pointerdown', onPointerDown);
+    window.addEventListener('keydown', onKeyDown);
+
+    return () => {
+      window.removeEventListener('pointerdown', onPointerDown);
+      window.removeEventListener('keydown', onKeyDown);
+    };
+  }, [isOpen, id, onToggle]);
+
   const numSheets = sheets.length || 4;
 
   return (
@@ -154,21 +179,25 @@ export default function GlassFolder({
             </div>
           </div>
 
-          {/* 3 dots button */}
+          {/* Tombol aksi: 3 titik saat tertutup, tombol Tutup (✕) saat terbuka */}
           <button
             type="button"
             className="gf-key gf-key--more"
-            aria-label={`Options for ${title}`}
+            aria-label={isOpen ? `Close ${title}` : `Options for ${title}`}
             onClick={(e) => {
               e.stopPropagation();
-              setShowMenu((prev) => !prev);
+              onToggle && onToggle(id);
             }}
           >
-            <svg className="gf-glyph gf-glyph--more" viewBox="0 0 30 12" aria-hidden="true">
-              <rect x="1" y="1.5" width="8" height="9" rx="3.4" />
-              <rect x="11" y="1.5" width="8" height="9" rx="3.4" />
-              <rect x="21" y="1.5" width="8" height="9" rx="3.4" />
-            </svg>
+            {isOpen ? (
+              <span className="text-white text-sm font-bold flex items-center justify-center">✕</span>
+            ) : (
+              <svg className="gf-glyph gf-glyph--more" viewBox="0 0 30 12" aria-hidden="true">
+                <rect x="1" y="1.5" width="8" height="9" rx="3.4" />
+                <rect x="11" y="1.5" width="8" height="9" rx="3.4" />
+                <rect x="21" y="1.5" width="8" height="9" rx="3.4" />
+              </svg>
+            )}
           </button>
 
           {/* Dropdown menu */}
