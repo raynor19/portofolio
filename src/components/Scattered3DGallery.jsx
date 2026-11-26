@@ -30,18 +30,19 @@ export default function Scattered3DGallery({
   // Konfigurasi posisi dan parameter 3D organik untuk setiap kartu
   const cardConfigs = useMemo(() => {
     // 10 layout posisi organik (persentase dari viewport X & Y)
-    // Diposisikan lebih ke bawah dan seimbang di area tengah panggung 3D
+    // Diposisikan jauh ke bawah (y >= 28vh) serta stage container diturunkan
+    // sehingga kartu tidak pernah menutupi maupun mendekati floating menu navbar di atas
     const presets = [
-      { x: -26, y: 5,   rot: -5, zStart: -450, speed: 1.05 },
-      { x: 26,  y: 6,   rot: 4,  zStart: -250, speed: 1.0 },
-      { x: -8,  y: 10,  rot: -3, zStart: -700, speed: 1.15 },
-      { x: -33, y: 17,  rot: 7,  zStart: -1050, speed: 1.1 },
-      { x: 31,  y: 17,  rot: -6, zStart: -500, speed: 0.95 },
-      { x: 10,  y: 20,  rot: 3,  zStart: -850, speed: 1.12 },
-      { x: -18, y: 25,  rot: -7, zStart: -1300, speed: 1.2 },
-      { x: 20,  y: 26,  rot: 6,  zStart: -950, speed: 1.0 },
-      { x: 1,   y: 28,  rot: -4, zStart: -1450, speed: 1.25 },
-      { x: -35, y: 24,  rot: 5,  zStart: -1600, speed: 1.3 },
+      { x: -28, y: 28,  rot: -5, zStart: -450, speed: 1.05 },  // Kiri
+      { x: 28,  y: 29,  rot: 4,  zStart: -250, speed: 1.0 },   // Kanan
+      { x: -10, y: 33,  rot: -3, zStart: -700, speed: 1.15 },  // Tengah-kiri
+      { x: -33, y: 35,  rot: 7,  zStart: -1050, speed: 1.1 },  // Kiri tengah
+      { x: 31,  y: 35,  rot: -6, zStart: -500, speed: 0.95 },  // Kanan tengah
+      { x: 10,  y: 38,  rot: 3,  zStart: -850, speed: 1.12 },  // Tengah-kanan
+      { x: -18, y: 40,  rot: -7, zStart: -1300, speed: 1.2 },  // Kiri bawah
+      { x: 20,  y: 41,  rot: 6,  zStart: -950, speed: 1.0 },   // Kanan bawah
+      { x: 0,   y: 42,  rot: -4, zStart: -1450, speed: 1.25 }, // Tengah bawah
+      { x: -34, y: 39,  rot: 5,  zStart: -1600, speed: 1.3 },  // Kiri paling bawah
     ];
 
     return items.map((item, i) => {
@@ -200,10 +201,10 @@ export default function Scattered3DGallery({
 
         {/* 3D Perspective Stage */}
         <div
-          className="absolute inset-0 flex items-center justify-center pointer-events-none"
+          className="absolute inset-x-0 bottom-0 top-[10vh] flex items-center justify-center pointer-events-none"
           style={{
             perspective: '1000px',
-            perspectiveOrigin: '50% 50%',
+            perspectiveOrigin: '50% 0%',
           }}
         >
           <div
