@@ -9,6 +9,7 @@ import Scattered3DGallery from './components/Scattered3DGallery';
 import GlassFolder from './components/GlassFolder';
 import ThemeToggle from './components/ThemeToggle';
 import ThanosDustTransition from './components/ThanosDustTransition';
+import InteractiveSpiderman from './components/InteractiveSpiderman';
 import { TRANSLATIONS } from './translations';
 
 const NAME = 'RENOR'.split('');
@@ -264,6 +265,7 @@ function SkillCard({ sk, i, dark = false }) {
         opacity: shown ? 1 : 0,
         transform: shown ? 'translateY(0)' : 'translateY(36px)',
         transition: `opacity .8s ease ${i * 90}ms, transform .8s cubic-bezier(.2,.8,.2,1) ${i * 90}ms`,
+        zIndex: isCss ? 25 : 1,
       }}
     >
       <div className={`group relative rounded-[1.75rem] border px-4 py-8 flex flex-col items-center text-center transition-all duration-500 hover:-translate-y-2 ${
@@ -271,21 +273,8 @@ function SkillCard({ sk, i, dark = false }) {
           ? 'bg-[#18181b] border-white/10 shadow-[0_10px_30px_rgba(0,0,0,.4)] hover:shadow-[0_24px_50px_rgba(0,0,0,.6)]'
           : 'bg-white border-black/[0.06] shadow-[0_10px_30px_rgba(0,0,0,.05)] hover:shadow-[0_24px_50px_rgba(0,0,0,.12)]'
       }`}>
-        {/* Spider-Man duduk di atas kartu CSS (tanpa kaki menggantung) */}
-        {isCss && (
-          <div
-            className="pointer-events-none absolute left-1/2 -translate-x-1/2 bottom-[calc(100%-4px)] z-20 w-24 md:w-28 select-none transition-transform duration-500 group-hover:scale-105"
-            style={{
-              filter: 'drop-shadow(0 6px 12px rgba(0,0,0,0.35))',
-            }}
-          >
-            <img
-              src="/spiderman-sitting.png"
-              alt="Spider-Man sitting on CSS card"
-              className="w-full h-auto object-contain"
-            />
-          </div>
-        )}
+        {/* Spider-Man interaktif di atas kartu CSS: klik untuk jatuh lalu naik lagi dengan jaring */}
+        {isCss && <InteractiveSpiderman />}
 
         {/* glow warna brand saat hover */}
         <div aria-hidden="true" className="overflow-hidden rounded-[1.75rem] pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500" style={{ background: `radial-gradient(circle at 50% 0%, ${sk.color}26, transparent 70%)` }} />
