@@ -28,19 +28,19 @@ export default function Scattered3DGallery({
   // Konfigurasi posisi dan parameter 3D organik untuk setiap kartu
   const cardConfigs = useMemo(() => {
     // 10 layout posisi organik (persentase dari viewport X & Y)
-    // Diposisikan jauh ke bawah (y >= 28vh) serta stage container diturunkan
-    // sehingga kartu tidak pernah menutupi maupun mendekati floating menu navbar di atas
+    // Diposisikan seimbang (y: 22vh - 34vh) agar berada pas di tengah layar
+    // dengan jarak aman ~150px di bawah floating navbar tanpa menutupi menu
     const presets = [
-      { x: -28, y: 28,  rot: -5, zStart: -450, speed: 1.05 },  // Kiri
-      { x: 28,  y: 29,  rot: 4,  zStart: -250, speed: 1.0 },   // Kanan
-      { x: -10, y: 33,  rot: -3, zStart: -700, speed: 1.15 },  // Tengah-kiri
-      { x: -33, y: 35,  rot: 7,  zStart: -1050, speed: 1.1 },  // Kiri tengah
-      { x: 31,  y: 35,  rot: -6, zStart: -500, speed: 0.95 },  // Kanan tengah
-      { x: 10,  y: 38,  rot: 3,  zStart: -850, speed: 1.12 },  // Tengah-kanan
-      { x: -18, y: 40,  rot: -7, zStart: -1300, speed: 1.2 },  // Kiri bawah
-      { x: 20,  y: 41,  rot: 6,  zStart: -950, speed: 1.0 },   // Kanan bawah
-      { x: 0,   y: 42,  rot: -4, zStart: -1450, speed: 1.25 }, // Tengah bawah
-      { x: -34, y: 39,  rot: 5,  zStart: -1600, speed: 1.3 },  // Kiri paling bawah
+      { x: -28, y: 22,  rot: -5, zStart: -450, speed: 1.05 },  // Kiri
+      { x: 28,  y: 23,  rot: 4,  zStart: -250, speed: 1.0 },   // Kanan
+      { x: -10, y: 26,  rot: -3, zStart: -700, speed: 1.15 },  // Tengah-kiri
+      { x: -33, y: 28,  rot: 7,  zStart: -1050, speed: 1.1 },  // Kiri tengah
+      { x: 31,  y: 28,  rot: -6, zStart: -500, speed: 0.95 },  // Kanan tengah
+      { x: 10,  y: 30,  rot: 3,  zStart: -850, speed: 1.12 },  // Tengah-kanan
+      { x: -18, y: 32,  rot: -7, zStart: -1300, speed: 1.2 },  // Kiri bawah
+      { x: 20,  y: 33,  rot: 6,  zStart: -950, speed: 1.0 },   // Kanan bawah
+      { x: 0,   y: 34,  rot: -4, zStart: -1450, speed: 1.25 }, // Tengah bawah
+      { x: -34, y: 31,  rot: 5,  zStart: -1600, speed: 1.3 },  // Kiri paling bawah
     ];
 
     return items.map((item, i) => {
@@ -191,10 +191,10 @@ export default function Scattered3DGallery({
 
         {/* 3D Perspective Stage */}
         <div
-          className="absolute inset-x-0 bottom-0 top-[10vh] flex items-center justify-center pointer-events-none"
+          className="absolute inset-x-0 bottom-0 top-[4vh] flex items-center justify-center pointer-events-none"
           style={{
             perspective: '1000px',
-            perspectiveOrigin: '50% 0%',
+            perspectiveOrigin: '50% 5%',
           }}
         >
           <div
