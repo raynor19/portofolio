@@ -12,9 +12,10 @@ export const TRANSLATIONS = {
     ],
     contactBtn: 'Contact me',
     heroWords: [
-      ['Fullstack', 1], ['developer', 1], ['crafting', 0], ['modern', 0], ['web', 0], ['from', 0],
-      ['frontends', 0], ['to', 0], ['servers,', 0], ['clean', 1], ['on', 1], ['display,', 1],
-      ['solid', 1], ['at', 1], ['core.', 1],
+      ['Frontend', 1], ['Developer', 1],
+      ['engineering', 0], ['pixels', 0], ['into', 0], ['purpose,', 0],
+      ['where', 0], ['design', 0], ['meets', 0], ['technology.', 0],
+      ['Creating', 1, true], ['the', 1], ['web,', 1], ['one', 1], ['experience', 1], ['at', 1], ['a', 1], ['time.', 1],
     ],
     about: {
       headAccent: 'effortless to use.',
@@ -188,9 +189,10 @@ export const TRANSLATIONS = {
     ],
     contactBtn: 'Contact me',
     heroWords: [
-      ['Fullstack', 1], ['developer', 1], ['yang', 0], ['membangun', 0], ['web', 0], ['dari', 0],
-      ['tampilan', 0], ['sampai', 0], ['server,', 0], ['rapi', 1], ['di', 1], ['depan,', 1],
-      ['kokoh', 1], ['di', 1], ['belakang.', 1],
+      ['Frontend', 1], ['Developer', 1],
+      ['engineering', 0], ['pixels', 0], ['into', 0], ['purpose,', 0],
+      ['where', 0], ['design', 0], ['meets', 0], ['technology.', 0],
+      ['Creating', 1, true], ['the', 1], ['web,', 1], ['one', 1], ['experience', 1], ['at', 1], ['a', 1], ['time.', 1],
     ],
     about: {
       headAccent: 'nyaman dipakai.',

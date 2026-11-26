@@ -640,16 +640,19 @@ export default function App() {
             }}
           />
           <p className="text-[1.65rem] md:text-[2.35rem] leading-[1.14] font-bold tracking-[-0.03em]">
-            {t.heroWords.map(([w, key], i) => (
-              <span key={`${lang}-${i}`} className="inline-block mr-[0.26em]" style={{ overflow: 'visible clip', paddingBottom: '0.08em' }}>
-                <span
-                  className={`inline-block transition-colors duration-700 ${key ? (isDark ? 'text-white' : 'text-black') : (isDark ? 'text-zinc-500' : 'text-zinc-400')}`}
-                  style={{
-                    transform: introFinished ? 'translateY(0)' : 'translateY(115%)',
-                    transition: `transform .9s cubic-bezier(.2,.8,.2,1) ${introFinished ? 800 + i * 60 : 0}ms`,
-                  }}
-                >
-                  {w}
+            {t.heroWords.map(([w, key, br], i) => (
+              <span key={`${lang}-${i}`} className="contents">
+                {br && <br />}
+                <span className="inline-block mr-[0.26em]" style={{ overflow: 'visible clip', paddingBottom: '0.08em' }}>
+                  <span
+                    className={`inline-block transition-colors duration-700 ${key ? (isDark ? 'text-white' : 'text-black') : (isDark ? 'text-zinc-500' : 'text-zinc-400')}`}
+                    style={{
+                      transform: introFinished ? 'translateY(0)' : 'translateY(115%)',
+                      transition: `transform .9s cubic-bezier(.2,.8,.2,1) ${introFinished ? 800 + i * 60 : 0}ms`,
+                    }}
+                  >
+                    {w}
+                  </span>
                 </span>
               </span>
             ))}
