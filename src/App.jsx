@@ -328,12 +328,13 @@ const FOLDERS_DATA = [
   {
     id: 'projects',
     title: 'Projects',
-    count: 6,
+    count: 5,
     sheets: [
-      { src: '/uploads/proj-hology.jpg', title: 'Hology UI Design – Modern Mobile & Web App' },
-      { src: '/uploads/proj-rujukcepat.png', title: 'RujukCepat – Healthcare & Referral System' },
-      { src: '/uploads/proj-risetin.png', title: 'Risetin Analytics – Research Platform' },
-      { src: '/uploads/proj-luma.png', title: 'Luma Interactive – Event Management Platform' },
+      { src: '/uploads/proj-stayjogja.jpg', title: 'StayJogja – Hotel Booking & AI Trip Planner' },
+      { src: '/uploads/proj-memberstack.jpg', title: 'Memberstack – SaaS Dashboard & AI Assistant' },
+      { src: '/uploads/proj-kiostani.jpg', title: 'Kios Tani – Digital Fertilizer Subsidy System' },
+      { src: '/uploads/proj-ojyms.jpg', title: 'OJYMS – Alumni & Career Networking Platform' },
+      { src: '/uploads/proj-widata.jpg', title: 'Widata – Kalurahan Digital Recording System' },
     ],
   },
   {
