@@ -363,7 +363,7 @@ const FOLDERS_DATA = [
 
 export default function App() {
   const [lang, setLang] = useState('en');
-  const [activeFolder, setActiveFolder] = useState('projects');
+  const [activeFolder, setActiveFolder] = useState(null);
   const [previewSheet, setPreviewSheet] = useState(null);
   const [isDark, setIsDark] = useState(() => {
     if (typeof window !== 'undefined') {
